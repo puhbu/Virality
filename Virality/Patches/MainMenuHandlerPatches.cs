@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
 using Photon.Pun;
+using Steamworks;
 using Virality.Helpers;
 
 namespace Virality.Patches;

@@ -9,6 +9,9 @@ namespace Virality.Helpers
 {
     public static class CustomPhotonInstanceHelper
     {
+        public const string RealtimeAppIdKey = "REALTIME_APP_ID";
+        public const string VoiceAppIdKey = "VOICE_APPID";
+
         public static string? DefaultRealtimeAppId = null;
         public static string? DefaultVoiceAppId = null;
 
@@ -29,6 +32,8 @@ namespace Virality.Helpers
         {
             PhotonNetwork.Disconnect();
             PhotonNetwork.ConnectUsingSettings();
+
+            Virality.Logger?.LogDebug("Forcing reconnection due to appid change...");
         }
 
         // TECHNICALLY realtime and voice apps are different. will this cause problems? only one way to find out...
@@ -39,9 +44,6 @@ namespace Virality.Helpers
             // PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat = appId;
             // PhotonNetwork.PhotonServerSettings.AppSettings.AppIdFusion = appId;
             PhotonNetwork.PhotonServerSettings.AppSettings.AppIdVoice = voiceAppId;
-
-            // PhotonNetwork.Disconnect();
-            // PhotonNetwork.ConnectUsingSettings();
         }
 
         public static void LogAppId()

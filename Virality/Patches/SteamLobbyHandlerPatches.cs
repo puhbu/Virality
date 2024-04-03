@@ -34,6 +34,7 @@ internal static class SteamLobbyHandlerPatches
             PhotonReconnectionBehaviour.Instance?.InvokeCallbackOnConnection(() =>
             {
                 Virality.Logger.LogDebug("Reconnected....");
+                CustomPhotonInstanceHelper.LogAppId();
                 instance.HostMatch(_action, privateMatch);
             });
 
@@ -46,13 +47,23 @@ internal static class SteamLobbyHandlerPatches
 
     /// <summary>
     ///     Postfix patch for the OnLobbyCreatedCallback method.
-    ///     Updates Steam rich presence.
+    ///     Updates Steam rich presence and photon appid syncing.
     /// </summary>
     /// <param name="__instance"> Instance of the SteamLobbyHandler. </param>
     [HarmonyPostfix]
     [HarmonyPatch(nameof(SteamLobbyHandler.OnLobbyCreatedCallback))]
     private static void OnLobbyCreatedCallbackPostfix(ref SteamLobbyHandler __instance)
     {
+        // network custom photon appid to allow smooth joining
+        if (!CustomPhotonInstanceHelper.AppIsDefault())
+        {
+            // TODO : Get this appid value from the lobby settings itself
+            SteamMatchmaking.SetLobbyData(SteamLobbyHelper.GetLobbyId(), CustomPhotonInstanceHelper.RealtimeAppIdKey, Virality.CustomPhotonRealtimeAppId!.Value);
+            SteamMatchmaking.SetLobbyData(SteamLobbyHelper.GetLobbyId(), CustomPhotonInstanceHelper.VoiceAppIdKey, Virality.CustomPhotonRealtimeAppId!.Value);
+
+            Virality.Logger?.LogDebug("Setting lobby appid data...");
+        }
+
         if (!Virality.AllowFriendJoining!.Value)
             return;
 
