@@ -6,9 +6,7 @@ name: .NET
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-      workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,8 +25,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-     
-      - uses: actions/upload-artifact@v4
+   - name: try to upload as an artifact
+     - uses: actions/upload-artifact@v4
         with:
           name: test123
           path: dist/
