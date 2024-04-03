@@ -43,7 +43,7 @@ jobs:
           name: nupkg-build
           path: Virality/bin/Release/*.nupkg
           
- upload-release-artifacts:
+  upload-release-artifacts:
     needs: build
     runs-on: ubuntu-latest
     permissions: write-all
