@@ -15,9 +15,28 @@ namespace Virality.Helpers
         public static string? DefaultRealtimeAppId = null;
         public static string? DefaultVoiceAppId = null;
 
+        public static bool AppIdMatches(string? realtimeAppId, string? voiceAppId)
+        {
+            return PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime == realtimeAppId && PhotonNetwork.PhotonServerSettings.AppSettings.AppIdVoice == voiceAppId;
+        }
+
+        public static string? GetCustomVoiceAppId()
+        {
+            // just use voice app id if we have it
+            if (CustomAppIdIsValid(Virality.CustomPhotonVoiceAppId?.Value))
+            {
+                return Virality.CustomPhotonVoiceAppId?.Value;
+            }
+
+            if (!CustomAppIdIsValid(Virality.CustomPhotonRealtimeAppId?.Value)) 
+                return null;
+
+            return Virality.CustomPhotonRealtimeAppId?.Value;
+        }
+
         public static bool AppIsDefault()
         {
-            return DefaultRealtimeAppId == PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime && DefaultVoiceAppId == PhotonNetwork.PhotonServerSettings.AppSettings.AppIdVoice;
+            return AppIdMatches(DefaultRealtimeAppId, DefaultVoiceAppId);
         }
 
         public static void SetToDefaultApp()
@@ -26,6 +45,11 @@ namespace Virality.Helpers
                 return;
 
             SetAppId(DefaultRealtimeAppId, DefaultVoiceAppId);
+        }
+
+        public static bool CustomAppIdIsValid(string? appId)
+        {
+            return !string.IsNullOrWhiteSpace(appId);
         }
 
         public static void ForceReconnection()

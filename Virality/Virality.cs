@@ -20,6 +20,7 @@ public class Virality : BaseUnityPlugin
     internal static ConfigEntry<bool>? AllowFriendJoining { get; private set; }
     internal static ConfigEntry<bool>? AllowLateJoin { get; private set; }
     internal static ConfigEntry<string>? CustomPhotonRealtimeAppId { get; private set; }
+    internal static ConfigEntry<string>? CustomPhotonVoiceAppId { get; private set; }
 
     /// <summary>
     ///     Singleton instance of the plugin.
@@ -46,6 +47,9 @@ public class Virality : BaseUnityPlugin
 
         CustomPhotonRealtimeAppId = Config.Bind("General", "CustomPhotonRealtimeAppId", "",
             "A custom photon app ID to use. This is only required if you are hosting a lobby.");
+
+        CustomPhotonVoiceAppId = Config.Bind("General", "CustomPhotonVoiceAppId", "",
+            "A custom photon app ID to use for voice. This is only required if you are hosting a lobby. Defaults to the same value as CustomPhotonRealtimeAppId.");
 
         // Patch using Harmony
         PatchAll();

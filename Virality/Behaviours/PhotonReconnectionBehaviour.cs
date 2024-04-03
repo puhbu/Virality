@@ -10,7 +10,7 @@ namespace Virality.Behaviours
     public class PhotonReconnectionBehaviour : MonoBehaviourPunCallbacks
     {
         public static PhotonReconnectionBehaviour? Instance { get; private set; }
-        public static List<Action?> InvokeOnConnected = new();
+        public static Action? InvokeOnConnected;
 
         public void Start()
         {
@@ -26,17 +26,12 @@ namespace Virality.Behaviours
         // needed for smooth midgame id switching
         public override void OnConnectedToMaster()
         {
-            foreach (var action in InvokeOnConnected)
-            {
-                action?.Invoke();
-            }
-
-            InvokeOnConnected.Clear();
+            InvokeOnConnected?.Invoke();
         }
 
-        public void InvokeCallbackOnConnection(Action callback)
+        public void InvokeCallbackOnConnection(Action? callback)
         {
-            InvokeOnConnected.Add(callback);
+            InvokeOnConnected = callback;
         }
     }
 }

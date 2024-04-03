@@ -37,5 +37,6 @@ internal static class MainMenuHandlerPatches
         }
 
         CustomPhotonInstanceHelper.LogAppId();
+        SteamLobbyHandlerPatches.CurrentConnectionAttempt = 0;
     }
 }
