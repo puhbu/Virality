@@ -4,15 +4,15 @@
 name: .NET
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
-  workflow_dispatch:
 
 jobs:
   build:
-
+    name: try to build
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -25,8 +25,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-   - name: try to upload as an artifact
-     - uses: actions/upload-artifact@v4
+    - name: try to upload as an artifact
+    - uses: actions/upload-artifact@v4
         with:
           name: test123
           path: dist/
