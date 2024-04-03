@@ -1,10 +1,10 @@
 ﻿name: Publish
 
 on:
-workflow_dispatch:
+  workflow_dispatch:
   release:
     types: [ released, prereleased ]
-
+    
 jobs:
   build:
     name: build
