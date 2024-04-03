@@ -25,8 +25,16 @@ internal static class MainMenuHandlerPatches
     [HarmonyPatch("Start")]
     private static void StartPatch()
     {
-        Virality.Logger?.LogDebug("GULP");
+        // capture defaults if we haven't already
+        CustomPhotonInstanceHelper.CaptureDefaults();
 
-        PhotonLobbyHelper.LogAppId();
+        // reset photon to default to avoid breaking normal matchmaking (if not host)
+        if (!CustomPhotonInstanceHelper.AppIsDefault())
+        {
+            CustomPhotonInstanceHelper.SetToDefaultApp();
+            CustomPhotonInstanceHelper.ForceReconnection();
+        }
+
+        CustomPhotonInstanceHelper.LogAppId();
     }
 }

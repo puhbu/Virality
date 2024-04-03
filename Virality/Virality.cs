@@ -2,6 +2,8 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine;
+using Virality.Behaviours;
 
 namespace Virality;
 
@@ -17,6 +19,7 @@ public class Virality : BaseUnityPlugin
     internal static ConfigEntry<int>? MaxPlayers { get; private set; }
     internal static ConfigEntry<bool>? AllowFriendJoining { get; private set; }
     internal static ConfigEntry<bool>? AllowLateJoin { get; private set; }
+    internal static ConfigEntry<string>? CustomPhotonRealtimeAppId { get; private set; }
 
     /// <summary>
     ///     Singleton instance of the plugin.
@@ -41,11 +44,19 @@ public class Virality : BaseUnityPlugin
         AllowLateJoin = Config.Bind("General", "AllowLateJoin", true,
             "Whether or not to allow players to join your lobby after the game has started.");
 
+        CustomPhotonRealtimeAppId = Config.Bind("General", "CustomPhotonRealtimeAppId", "",
+            "A custom photon app ID to use. This is only required if you are hosting a lobby.");
+
         // Patch using Harmony
         PatchAll();
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+
+        // Create reconnection behaviour
+        var reconnectionGameObject = new GameObject("PhotonReconnectionBehaviour");
+        reconnectionGameObject.hideFlags = HideFlags.HideAndDontSave;
+        reconnectionGameObject.AddComponent<PhotonReconnectionBehaviour>();
     }
 
     private void PatchAll()
