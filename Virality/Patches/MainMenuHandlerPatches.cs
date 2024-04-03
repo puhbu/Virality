@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
+using Photon.Pun;
+using Virality.Helpers;
 
 namespace Virality.Patches;
 
@@ -17,5 +19,14 @@ internal static class MainMenuHandlerPatches
             .ThrowIfInvalid("Could not find max players constant")
             .SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldc_I4, Virality.MaxPlayers!.Value))
             .InstructionEnumeration();
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch("Start")]
+    private static void StartPatch()
+    {
+        Virality.Logger?.LogDebug("GULP");
+
+        PhotonLobbyHelper.LogAppId();
     }
 }
