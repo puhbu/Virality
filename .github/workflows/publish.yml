@@ -54,4 +54,4 @@ jobs:
       - name: Upload artifacts to Release
         env:
           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} /home/runner/work/Virality/Virality/Virality/bin/Release/net472/MaxWasUnavailable.Virality.dll
+        run: gh release upload test /home/runner/work/Virality/Virality/Virality/bin/Release/net472/MaxWasUnavailable.Virality.dll
