@@ -42,16 +42,3 @@ jobs:
         with:
           name: nupkg-build
           path: Virality/bin/Release/*.nupkg
-          
- ### upload-release-artifacts:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download all Artifacts
-        uses: actions/download-artifact@v4 
-      - name: Upload artifacts to Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
-        run: gh release upload test /home/runner/work/Virality/Virality/Virality/bin/Release/net472/MaxWasUnavailable.Virality.dll
